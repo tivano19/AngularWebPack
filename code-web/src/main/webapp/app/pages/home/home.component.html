@@ -1,0 +1,24 @@
+﻿<div class="full-grid">
+    <h1>Master-Detail Example</h1>
+
+
+
+    <ag-grid-angular
+            style="width: 100%; height: 100%;"
+            #myGrid
+            class="ag-theme-balham"
+            [gridOptions]="gridOptions"
+            enableFilter="true"
+            enableSorting
+            enableColResize
+            rowSelection="multiple"
+
+            (rowSelected)="onRowSelected($event)"
+
+            (cellClicked)="onCellSelected($event)"
+            (rowDoubleClicked)='onRowDoubleClicked($event)'
+            (gridReady)="onGridReady($event)"
+    >
+    </ag-grid-angular>
+</div>
+

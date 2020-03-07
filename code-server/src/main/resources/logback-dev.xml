@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml" />
+
+    <appender name="Console"
+              class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>${CONSOLE_LOG_PATTERN}</Pattern>
+        </layout>
+    </appender>
+
+    <!-- LOG everything at INFO level -->
+    <root level="DEBUG">
+        <appender-ref ref="Console" />
+    </root>
+
+    <!-- LOG "com.myorga.code*" at TRACE level -->
+    <logger name="com.myorga.code" level="TRACE" additivity="false">
+        <appender-ref ref="Console" />
+    </logger>
+
+</configuration>

@@ -1,0 +1,8 @@
+﻿.mat-table {
+    overflow: auto;
+    max-height: 500px;
+}
+
+a {
+    cursor: pointer;
+}

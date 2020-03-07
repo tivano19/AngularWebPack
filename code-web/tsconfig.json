@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "removeComments": false,
+    "strict": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "outDir": "dist/app",
+    "lib": ["es6", "dom"],
+    "typeRoots": ["node_modules/@types"],
+    "baseUrl": "./myapp/content/events/",
+    "paths": {
+      "app/*": ["src/main/webapp/app/*"]
+    },
+    "importHelpers": true,
+    "allowJs": true
+  },
+  "include": ["src/main/webapp/app", "src/test/javascript/"],
+  "exclude": ["node_modules", "dist"]
+}
