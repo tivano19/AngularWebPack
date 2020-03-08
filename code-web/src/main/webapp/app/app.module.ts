@@ -15,7 +15,7 @@ import { NgbModule, NgbActiveModal, NgbDatepickerModule, NgbDropdownModule, NgbP
 import { MenubarModule } from 'primeng/menubar';
 import { ClipboardModule } from 'ngx-clipboard';
 import { JwtInterceptor, ErrorInterceptor, TimingInterceptor } from './core/interceptors';
-import { HomeComponent } from './pages/home';
+import { HomeComponent, MenuBarComponent } from './pages/home';
 import { MessageService } from 'primeng/api';
 import { ContextMenuModule } from 'ngx-contextmenu';
 
@@ -32,6 +32,7 @@ import { ContextMenuModule } from 'ngx-contextmenu';
     MenubarModule
   ],
   declarations: [MainComponent,
+    MenuBarComponent,
     HomeComponent],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

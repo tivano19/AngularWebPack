@@ -1,74 +1,137 @@
-﻿import {AfterViewInit, OnInit, Component} from '@angular/core';
+﻿import {AfterViewInit, OnInit, Component, ViewChild} from '@angular/core';
+import {DatePipe} from '@angular/common';
+
 import {GridOptions} from 'ag-grid/main';
+import {ColDef, ColumnApi, GridApi} from 'ag-grid';
+
+import {UserService} from '../../core/services/';
 import {DetailUser} from '../../core/models/detail.user';
+import {MenuItem} from 'primeng/api';
 
 import {NgbModal, NgbModalConfig} from '@ng-bootstrap/ng-bootstrap';
 
 
+
 @Component({
-    selector: 'my-home-app',
+    selector: 'home-app',
     templateUrl: './home.component.html'
 })
 export class HomeComponent implements OnInit, AfterViewInit {
 
     public gridOptions: GridOptions;
 
+    public isRowSelectable: any;
+
+    @ViewChild('myMenuBar', {static: false}) myMenuBar: any;
+
     public cellValue?: string;
 
+    public components: any;
+
     constructor(private _modalService: NgbModal,
-                private _mdalConfig: NgbModalConfig) {
+                private _mdalConfig: NgbModalConfig,
+                private userService: UserService) {
         // customize default values of modals used by this component tree
         this._mdalConfig.backdrop = 'static';
         this._mdalConfig.keyboard = false;
 
-
-        this.gridOptions = {} as GridOptions ;
+        this.gridOptions = <GridOptions> {};
         this.gridOptions.columnDefs = this.createColumnDefs();
+
+        this.isRowSelectable = function (rowNode: any) {
+            return rowNode.data.id === 11 ? false : true;
+        };
+
+        this.components = {
+            loadingCellRenderer: function (params: any) {
+                let value: number = params.value;
+                if (value !== 11) {
+                    return '<span class="bg-light text-black-50 rounded-circle px-1 py-1">' +
+                        ((value < 10) ? ('0' + value) : value) + '</span>';
+                } else {
+                    // return '<img  class="ag-theme-balham ag-icon-loading">';
+                    return '<img src="../../../assets/img/loading.gif"> ' + ' ' +
+                        '<span class="bg-light text-black-50 rounded-circle px-1 py-1">' +
+                        ((value < 10) ? ('0' + value) : value) + '</span>';
+                }
+            }
+        };
 
     }
 
     // Sometimes the gridReady event can fire before the angular component is ready to receive it,
     // so in an angular environment its safer to on you cannot safely rely
     // on AfterViewInit instead before using the API
-    public ngAfterViewInit(): void {
+    public ngAfterViewInit() {
     }
 
-    public ngOnInit() : void {
+    public ngOnInit() {
         // this.callServerForProcessingIds();
     }
 
+    public callServerForProcessingIds() {
+        this.userService.pollingProcessedIds(25).subscribe((msg: any) => {
+            console.log('response server');
+            console.log(msg);
+            console.log('retry call servers for processing ');
+            this.setDataById();
+        });
+    }
 
 
     // one grid initialisation, grab the APIs and auto resize the columns to fit the available space
     public onGridReady(params: any): void {
-      const users: DetailUser[] = [];
-      users.push(new DetailUser(1, 2));
-      users.push(new DetailUser(1, 2));
-      users.push(new DetailUser(1, 2));
-      users.push(new DetailUser(1, 2));
-            this.gridOptions.api!.setRowData(users);
+        this.userService.getAll().subscribe((callRecords: DetailUser[]) => {
+            // asign data to our class property in the end
+            this.gridOptions.api!.setRowData(callRecords);
             this.autoSizeAll();
-
+        });
     }
 
 
-    public onRowDoubleClicked(event: any):void {
+    public onRowDoubleClicked(event: any) {
         const rowId: number = event.data.id;
         console.log('selected row event.data: ' + event.data.id);
         this.openModal(rowId);
     }
 
-    public onRowSelected(event: any): void {
-      console.log(event);
+    public onRowSelected(event: any) {
+        let items: MenuItem[] = this.myMenuBar.items[0].items;
+        let elements: any[] = this.gridOptions.api!.getSelectedRows();
+        console.log('onRowSelected: ' + this.myMenuBar.items[0].items);
+
+        for (let i = 0; i < items.length; i++) {
+            let item: MenuItem = items[i];
+            let disabled: boolean = item.disabled!;
+
+            if (elements.length === 0) {
+                item.disabled = true;
+                continue;
+            }
+            console.log('Old Disabled: ' + disabled);
+            let canApply: boolean = false;
+
+            for (let j = 0; j < elements.length; j++) {
+                let element: any = elements[j];
+                canApply = this.userService.canApplyAction(element.actionsPossible, item.id);
+                if (!canApply) {
+                    break;
+                }
+            }
+
+            item.disabled = !canApply;
+            console.log('Menu: ' + item.id + ', Disabled: ' + !canApply);
+        }
+
     }
 
 
-    public onCellSelected(event: any):void {
+    public onCellSelected(event: any) {
         // let newRecordToUpdate = event.data;
-        const filterModel: any = this.gridOptions.api!.getFilterModel();
+        let filterModel: any = this.gridOptions.api!.getFilterModel();
         console.log(filterModel.firstName);
         if(filterModel.firstName) {
-            if(filterModel.firstName.condition3 === undefined) {
+            if(filterModel.firstName.condition3 == undefined) {
                 filterModel.firstName.condition3 = {
                     type: 'contains',
                     filter: 'done',
@@ -82,9 +145,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.cellValue = event.value;
     }
 
-    public setDataById():void {
-        const ids: number[] = this.getselectedIds();
-        const itemsToUpdate: any = [];
+    public setDataById() {
+        let ids: number[] = this.getselectedIds();
+        let itemsToUpdate: any[] = [];
 
         this.gridOptions.api!.forEachNode(function (rowNode: any) {
             let data = rowNode.data;
@@ -100,8 +163,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     private getselectedIds(): number[] {
-      const ides: number[] = [];
-      const selectedNode: any = this.gridOptions.api!.getSelectedRows();
+        let ides: number[] = [];
+        let selectedNode: any = this.gridOptions.api!.getSelectedRows();
         for (let i = 0; i < selectedNode.length; i++) {
             ides.push(selectedNode[i].id);
         }
@@ -110,20 +173,20 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
 
-    private openModal(rowId: number):void {
+    private openModal(rowId: number) {
         // const modalRef = this.modalService.open(ModalComponent);
 
     }
 
-    private autoSizeAll():void {
-        var allColumnIds: any = [];
+    private autoSizeAll() {
+        let allColumnIds: any[] = [];
         this.gridOptions.columnApi!.getAllColumns().forEach(function (column) {
             allColumnIds.push(column.getColId());
         });
         this.gridOptions.columnApi!.autoSizeColumns(allColumnIds);
     }
 
-    private createColumnDefs():any[] {
+    private createColumnDefs() {
         return [
             {
                 headerName: '', checkboxSelection: true,
@@ -139,25 +202,25 @@ export class HomeComponent implements OnInit, AfterViewInit {
             {
                 headerName: 'First Name', field: 'firstName',
                 cellClassRules: {
-                    'rag-green-outer': function (params: any)  {
+                    'rag-green-outer': function (params: any) {
                         return params.value === 'DONE';
                     },
-                    'rag-blue-outer': function (params: any)  {
+                    'rag-blue-outer': function (params: any) {
                         return params.value === 'READY';
                     },
-                    'rag-red-outer': function (params: any)  {
+                    'rag-red-outer': function (params: any) {
                         return params.value === 'ERROR';
                     },
-                    'rag-light-outer': function (params: any)  {
+                    'rag-light-outer': function (params: any) {
                         return params.value === 'WAITING';
                     },
-                    'rag-cyan-outer': function (params: any)  {
+                    'rag-cyan-outer': function (params: any) {
                         return params.value === 'IN_PROGRESS';
                     },
-                    'rag-black-outer': function (params: any)  {
+                    'rag-black-outer': function (params: any) {
                         return params.value === 'DELETED';
                     },
-                    'rag-yello-outer': function (params: any)  {
+                    'rag-yello-outer': function (params: any) {
                         return params.value === 'OUT_SCOPED';
                     }
                 },

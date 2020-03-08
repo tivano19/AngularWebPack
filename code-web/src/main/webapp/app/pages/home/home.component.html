@@ -1,6 +1,10 @@
 ﻿<div class="full-grid">
     <h1>Master-Detail Example</h1>
 
+    <menu-bar [gridOptions]="gridOptions" [cellValue]="cellValue"
+    #myMenuBar
+    >
+    </menu-bar>
 
 
     <ag-grid-angular
@@ -12,6 +16,9 @@
             enableSorting
             enableColResize
             rowSelection="multiple"
+            [suppressRowClickSelection]="true"
+            [isRowSelectable]="isRowSelectable"
+            [components]="components"
 
             (rowSelected)="onRowSelected($event)"
 
