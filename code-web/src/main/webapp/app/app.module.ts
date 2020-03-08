@@ -12,7 +12,6 @@ import { CookieService } from 'ngx-cookie-service';
 import { AgGridModule } from 'ag-grid-angular';
 //
 import { NgbModule, NgbActiveModal, NgbDatepickerModule, NgbDropdownModule, NgbPopoverModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
-import { MenubarModule } from 'primeng/menubar';
 import { ClipboardModule } from 'ngx-clipboard';
 import { JwtInterceptor, ErrorInterceptor, TimingInterceptor } from './core/interceptors';
 import { HomeComponent, MenuBarComponent } from './pages/home';
@@ -28,8 +27,7 @@ import { ContextMenuModule } from 'ngx-contextmenu';
     ClipboardModule,
     ContextMenuModule.forRoot(),
     AgGridModule.withComponents([]),
-    NgbModule, NgbDatepickerModule, NgbDropdownModule, NgbPopoverModule, NgbTimepickerModule,
-    MenubarModule
+    NgbModule, NgbDatepickerModule, NgbDropdownModule, NgbPopoverModule, NgbTimepickerModule
   ],
   declarations: [MainComponent,
     MenuBarComponent,

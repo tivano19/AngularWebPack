@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const { BaseHrefWebpackPlugin } = require('base-href-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const AngularCompilerPlugin = require('@ngtools/webpack').AngularCompilerPlugin;
 const MergeJsonWebpackPlugin = require("merge-jsons-webpack-plugin");
 
 const utils = require('./utils.js');
@@ -18,6 +19,10 @@ module.exports = (options) => ({
     },
     module: {
         rules: [
+            {
+                test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
+                loader: '@ngtools/webpack'
+            },
             {
                 test: /\.html$/,
                 loader: 'html-loader',
@@ -36,7 +41,9 @@ module.exports = (options) => ({
                 options: {
                     digest: 'hex',
                     hash: 'sha512',
-                    name: 'content/[hash].[ext]'
+                    // For fixing src attr of image
+                    name: 'content/[hash].[ext]',
+                    esModule: false
                 }
             },
             {
@@ -58,7 +65,6 @@ module.exports = (options) => ({
                 // APP_VERSION is passed as an environment variable from the Gradle / Maven build tasks.
                 VERSION: `'${process.env.hasOwnProperty('APP_VERSION') ? process.env.APP_VERSION : 'DEV'}'`,
                 DEBUG_INFO_ENABLED: options.env === 'development',
-                // The root URL for API calls, ending with a '/' - for example: `"https://www.localhost:8081/myservice/"`.
                 // If this URL is left empty (""), then it will be relative to the current context.
                 SERVER_API_URL: `''`
             }
@@ -79,6 +85,11 @@ module.exports = (options) => ({
             chunksSortMode: 'manual',
             inject: 'body'
         }),
-        new BaseHrefWebpackPlugin({ baseHref: options.env === 'development' ? '/' : '/myapp/content/events/' })
+        new BaseHrefWebpackPlugin({ baseHref: options.env === 'development' ? '/' : '/myapp/content/events/' }),
+        new AngularCompilerPlugin({
+            mainPath: utils.root('src/main/webapp/app/app.main.ts'),
+            tsConfigPath: utils.root('tsconfig.app.json'),
+            sourceMap: true
+        })
     ]
 });
