@@ -4,13 +4,13 @@ export class DetailUser {
 
     duration?: number;
 
-    switchCode?: String;
+    switchCode?: string;
 
-    direction?: String;
+    direction?: string;
 
     number?: number;
 
-  constructor(callId:number, duration: number){
+  constructor(callId: number, duration: number){
 
     }
 

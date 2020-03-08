@@ -1,18 +1,18 @@
 export class CurrentUser {
  id?: number;
 
-username?: String;
+username?: string;
 
-firstName?: String;
+firstName?: string;
 
-lastName?: String;
+lastName?: string;
 
-token?: String;
+token?: string;
 
-secretKey?: String;
+secretKey?: string;
 
-tokenType?: String;
+tokenType?: string;
 
-authorities:any[]= [];
+authorities: any[]= [];
 
 }

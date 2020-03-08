@@ -4,8 +4,8 @@ import {CurrentUser} from '../models'
 @Injectable({ providedIn: 'root' })
 export class JwtService {
 
-    public getToken(): String {
-        const currentUser:CurrentUser = this.getCurrentUser();
+    public getToken(): string {
+        const currentUser: CurrentUser = this.getCurrentUser();
 
         if (currentUser) {
           return currentUser.token as string;

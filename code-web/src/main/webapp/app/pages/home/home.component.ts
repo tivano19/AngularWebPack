@@ -13,7 +13,7 @@ import {NgbModal, NgbModalConfig} from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
-    selector: 'home-app',
+    selector: 'my-home-app',
     templateUrl: './home.component.html'
 })
 export class HomeComponent implements OnInit, AfterViewInit {

@@ -1,0 +1,9 @@
+node_modules/
+src/test/javascript/protractor.conf.js
+src/test/javascript/jest.conf.js
+webpack/
+target/
+build/
+dist/
+node/
+postcss.config.js

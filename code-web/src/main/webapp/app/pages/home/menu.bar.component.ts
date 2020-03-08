@@ -12,7 +12,7 @@ import {MenuItem} from "primeng/api";
 
 
 @Component({
-    selector: 'menu-bar',
+    selector: 'my-menu-bar',
     templateUrl: './menu.bar.component.html'
 })
 export class MenuBarComponent implements OnInit, AfterViewInit {
