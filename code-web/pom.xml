@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.myorga.code</groupId>
-		<artifactId>code-parent</artifactId>
+		<artifactId>es-intel</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>code-web</artifactId>

@@ -36,6 +36,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/js/**")
                 .addResourceLocations("classpath:/js/").resourceChain(false);
     }
+
     @Bean
     public InternalResourceViewResolver viewResolver() {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
@@ -43,10 +44,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
         resolver.setSuffix(".html");
         return resolver;
     }
+
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addRedirectViewController("/","/content/events/index.html");
-        registry.addRedirectViewController("/content/events/","/content/events/index.html");
+        registry.addRedirectViewController("/", "/content/events/index.html");
+        registry.addRedirectViewController("/content/events/", "/content/events/index.html");
 
     }
 }

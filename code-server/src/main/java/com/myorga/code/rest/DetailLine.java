@@ -3,7 +3,7 @@ package com.myorga.code.rest;
 import lombok.Data;
 
 @Data
-public class DetailUser {
+public class DetailLine {
 
     private Integer callId;
 
@@ -15,7 +15,7 @@ public class DetailUser {
 
     private Integer number;
 
-    public DetailUser(Integer callId, Integer duration, String switchCode, Integer number, String direction) {
+    public DetailLine(Integer callId, Integer duration, String switchCode, Integer number, String direction) {
         this.callId = callId;
         this.duration = duration;
         this.switchCode = switchCode;

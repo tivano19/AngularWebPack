@@ -16,6 +16,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -55,7 +56,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        // PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        return new BCryptPasswordEncoder();
     }
 
     @Override
@@ -73,37 +75,35 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/",
-                        "/**/**/favicon.ico",
-                        "/**/**/*.png",
-                        "/**/**/*.gif",
-                        "/**/**/*.svg",
-                        "/**/**/*.jpg",
-                        "/**/**/*.html",
-                        "/**/**/*.css",
-                        "/**/**/*.css.map",
-                        "/**/**/*.js",
-                        "/content/events/assets/env/env-specific.json",
-                        "/content/events/assets/env/*",
-                        "/content/events/**",
-                        "/test",
-                        "/users/test",
-                        "/content/events/assets/env/env-prod.json")
+                        "/favicon.ico",
+                        "/**/*.png",
+                        "/**/*.gif",
+                        "/**/*.svg",
+                        "/**/*.jpg",
+                        "/**/*.html",
+                        "/**/*.css",
+                        "/**/*.js",
+                        "/**/**/**/",
+                        "/**/**/**/*.ico",
+                        "/**/**/**/**/*.woff",
+                        "/**/**/**/**/*.woff2",
+                        "/**/**/**/**/*.ttf"
+                        )
                 .permitAll()
-                //FIXME:
                 .antMatchers("/content/events/", "/content/events/*",
                         "/content/events/", "/content/events/index",  "/content/events/index.html", "/users")
                 .permitAll()
-                .antMatchers("/users/authenticate")
+
+                .antMatchers("/myapp/auth/**")
                 .permitAll()
-                .antMatchers("/users","/users/details")
+                .antMatchers("/myapp/content/events/**","/myapp/content/events/", "/myapp/content/events/**/**", "/myapp/content/events/**/*.*")
                 .permitAll()
-                .antMatchers("/users/processing")
+                .antMatchers("/myapp/user/checkUsernameAvailability", "/api/user/checkEmailAvailability")
                 .permitAll()
-                .antMatchers(HttpMethod.GET, "/api/polls/**", "/api/permit")
+                .antMatchers(HttpMethod.GET, "/myapp/content/events/**", "/myapp/users/**")
                 .permitAll()
                 .anyRequest()
-                .permitAll();
-                //.authenticated();
+                .authenticated();
 
         // Add our custom JWT security filter
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

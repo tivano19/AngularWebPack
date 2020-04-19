@@ -1,20 +1,14 @@
 package com.myorga.code.rest;
 
-import com.myorga.code.security.JwtAuthenticationResponse;
 import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.SpringApplication;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 
@@ -30,7 +24,7 @@ public class TestController {
     private int nbCall = 0;
 
     @PostConstruct
-    public void testWorkingDir(){
+    public void testWorkingDir() {
         String userDir = System.getProperty("user.dir");
 
         logger.info("-----  User Dir: " + userDir);
@@ -53,13 +47,13 @@ public class TestController {
         users.add(new User(3L, "lb.lounes3", "ERROR", "recompute, validate, process", Arrays.asList("RECOMPUTE", "VALIDATE", "PROCESS")));
         users.add(new User(4L, "lb.lounes3", "WAITING", "validate, process, skip", Arrays.asList("VALIDATE", "PROCESS", "SKIP")));
         users.add(new User(5L, "lb.lounes3", "IN_PROGRESS", "recompute, process, skip", Arrays.asList("RECOMPUTE", "PROCESS", "SKIP")));
-        users.add(new User(6L, "lb.lounes", "DONE", "validate, process", Arrays.asList( "VALIDATE", "PROCESS")));
+        users.add(new User(6L, "lb.lounes", "DONE", "validate, process", Arrays.asList("VALIDATE", "PROCESS")));
 
-        for(int i =0; i<333; i++){
+        for (int i = 0; i < 333; i++) {
             users.add(new User(11L, "lb.lounes", "DONE", "all", Arrays.asList("RECOMPUTE", "VALIDATE", "PROCESS", "SKIP")));
             users.add(new User(22L, "lb.lounes2", "READY", "all", Arrays.asList("RECOMPUTE", "VALIDATE", "PROCESS", "SKIP")));
             users.add(new User(33L, "lb.lounes3", "ERROR", "all", Arrays.asList("RECOMPUTE", "VALIDATE", "PROCESS", "SKIP")));
-            users.add(new User(44L, "lb.lounes3", "WAITING", "all",Arrays.asList("RECOMPUTE", "VALIDATE", "PROCESS", "SKIP")));
+            users.add(new User(44L, "lb.lounes3", "WAITING", "all", Arrays.asList("RECOMPUTE", "VALIDATE", "PROCESS", "SKIP")));
             users.add(new User(55L, "lb.lounes3", "IN_PROGRESS", "all", Arrays.asList("RECOMPUTE", "VALIDATE", "PROCESS", "SKIP")));
             users.add(new User(66L, "lb.lounes3", "DELETED", "all", Arrays.asList("RECOMPUTE", "VALIDATE", "PROCESS", "SKIP")));
             users.add(new User(77L, "lb.lounes3", "OUT_SCOPED", "all", Arrays.asList("RECOMPUTE", "VALIDATE", "PROCESS", "SKIP")));
@@ -67,7 +61,7 @@ public class TestController {
 
         users.add(new User(99L, "99", "DONE", "all@", Arrays.asList("RECOMPUTE", "VALIDATE", "PROCESS", "SKIP")));
 
-        logger.info(users.get(2).getUsername());
+        logger.info(users.get(2).toString());
         return ResponseEntity.ok(users);
     }
 
@@ -76,9 +70,9 @@ public class TestController {
         nbCall++;
         logger.info("Nb Call for prossing Id : " + nbCall);
 
-        List<DetailUser> users = new ArrayList<DetailUser>();
-        users.add(new DetailUser(1233, 444, "switch from server 1", 1, "Direction 1"));
-        users.add(new DetailUser(1234, 222, "switch from server 2", 2, "Direction 2"));
+        List<DetailLine> users = new ArrayList<DetailLine>();
+        users.add(new DetailLine(1233, 444, "switch from server 1", 1, "Direction 1"));
+        users.add(new DetailLine(1234, 222, "switch from server 2", 2, "Direction 2"));
         return ResponseEntity.ok(users);
     }
 
@@ -87,18 +81,18 @@ public class TestController {
         logger.info("id: " + id + ", strparam: " + strparam);
 
         logger.info("Get User deatils");
-        List<DetailUser> users = new ArrayList<DetailUser>();
+        List<DetailLine> users = new ArrayList<DetailLine>();
 
-            users.add(new DetailUser(1233, 444, "switch from server 1", 1, "Direction 1"));
-            users.add(new DetailUser(1234, 222, "switch from server 2", 2, "Direction 2"));
-            users.add(new DetailUser(1235, 111, "switch from server 3", 3, "Direction 3"));
-            users.add(new DetailUser(1236, 555, "switch from server 4", 4, "Direction 4"));
-            users.add(new DetailUser(1237, 666, "switch from server 5", 5, "Direction 5"));
-            users.add(new DetailUser(1238, 777, "switch from server 6", 6, "Direction 6"));
-            users.add(new DetailUser(1239, 100, "switch from server 7", 7, "Direction 7"));
-            users.add(new DetailUser(1230, 300, "switch from server 8", 8, "Direction 8"));
-            users.add(new DetailUser(1231, 400, "switch from server 9", 9, "Direction 9"));
-            users.add(new DetailUser(1232, 500, "switch from server 10", 10, "Direction 10"));
+        users.add(new DetailLine(1233, 444, "switch from server 1", 1, "Direction 1"));
+        users.add(new DetailLine(1234, 222, "switch from server 2", 2, "Direction 2"));
+        users.add(new DetailLine(1235, 111, "switch from server 3", 3, "Direction 3"));
+        users.add(new DetailLine(1236, 555, "switch from server 4", 4, "Direction 4"));
+        users.add(new DetailLine(1237, 666, "switch from server 5", 5, "Direction 5"));
+        users.add(new DetailLine(1238, 777, "switch from server 6", 6, "Direction 6"));
+        users.add(new DetailLine(1239, 100, "switch from server 7", 7, "Direction 7"));
+        users.add(new DetailLine(1230, 300, "switch from server 8", 8, "Direction 8"));
+        users.add(new DetailLine(1231, 400, "switch from server 9", 9, "Direction 9"));
+        users.add(new DetailLine(1232, 500, "switch from server 10", 10, "Direction 10"));
 
 
         logger.info("load details id {}", users.get(2).getCallId());
@@ -106,7 +100,7 @@ public class TestController {
     }
 
     @Data
-    public class User{
+    public class User {
 
         private int i = 0;
 

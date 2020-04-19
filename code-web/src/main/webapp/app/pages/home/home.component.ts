@@ -66,7 +66,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     public ngOnInit() {
-        // this.callServerForProcessingIds();
+        this.userService.attemptAuth("lounes","lounes");
     }
 
     public callServerForProcessingIds() {

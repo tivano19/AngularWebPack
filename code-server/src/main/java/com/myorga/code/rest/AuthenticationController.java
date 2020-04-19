@@ -1,58 +1,60 @@
 package com.myorga.code.rest;
 
-
 import com.myorga.code.security.JwtAuthenticationResponse;
 import com.myorga.code.security.JwtTokenProvider;
-import com.myorga.code.service.security.LoginDTO;
-
+import com.myorga.code.security.JwtAuthenticationRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 
 @RestController
-    @RequestMapping("/users")
-    public class AuthenticationController {
+@RequestMapping("/auth")
+public class AuthenticationController {
 
-        @Autowired
-        AuthenticationManager authenticationManager;
+    private static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
 
-        @Autowired
-        PasswordEncoder passwordEncoder;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-        @Autowired
-        JwtTokenProvider tokenProvider;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-        @PostMapping("/authenticate")
-        public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginDTO loginRequest) {
+    @Autowired
+    private JwtTokenProvider tokenProvider;
 
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            loginRequest.getUsername(),
-                            loginRequest.getPassword()
-                    )
-            );
+    @PostMapping("/signin")
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody JwtAuthenticationRequest loginRequest) {
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        logger.info("AuthenticateUser {} ", loginRequest);
 
-            String jwt = tokenProvider.generateToken(authentication);
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginRequest.getUsername(),
+                        loginRequest.getPassword()
+                )
+        );
 
-            System.out.println("Yes jwt : " + jwt);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            return ResponseEntity.ok(new JwtAuthenticationResponse(1L, "lounes", "lounes", "lounes", jwt, authentication.getAuthorities()));
-        }
+        String jwt = tokenProvider.generateToken(authentication);
 
+        logger.info("Yes jwt : {}", jwt);
 
-
+        return ResponseEntity.ok(new JwtAuthenticationResponse(1L, "lounes", "lounes", "lounes", jwt, authentication.getAuthorities()));
     }
+
+
+}

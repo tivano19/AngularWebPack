@@ -20,13 +20,9 @@ public class JwtAuthenticationResponse {
 
     private String token;
 
-    private String secretKey;
-
     private String tokenType = "Bearer";
 
-    private Collection<? extends GrantedAuthority> authorities= null;
-
-    private List<Object> callRecords = new ArrayList<Object>();
+    private Collection<? extends GrantedAuthority> authorities = null;
 
     public JwtAuthenticationResponse(Long id, String username, String firstName, String lastName, String token, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
@@ -35,10 +31,6 @@ public class JwtAuthenticationResponse {
         this.lastName = lastName;
         this.token = token;
         this.authorities = authorities;
-    }
-
-    public JwtAuthenticationResponse() {
-
     }
 
 }

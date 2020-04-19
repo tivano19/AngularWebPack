@@ -2,17 +2,13 @@ package com.myorga.code.model;
 
 
 import com.myorga.code.model.audit.DateAudit;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
-
+/**
+ * Hibernate user class
+ */
 public class User extends DateAudit {
 
     private Long id = Long.valueOf(123);
@@ -27,10 +23,12 @@ public class User extends DateAudit {
     private String email = "lounes";
 
 
-    private String password ="lounes";
+    private String password = "lounes";
 
 
-    private Set<Role> roles = new HashSet<Role>(){{add(new Role());}};
+    private Set<Role> roles = new HashSet<Role>() {{
+        add(new Role());
+    }};
 
     public User() {
 

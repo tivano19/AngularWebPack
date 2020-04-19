@@ -1,6 +1,7 @@
-package com.myorga.code.security;
+package com.myorga.code.service.security;
 
 import com.myorga.code.model.User;
+import com.myorga.code.security.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -32,6 +33,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsernameAndPassword(String username, String password) {
         User user = new User();
+        passwordEncoder.matches("lounes", "encodedPassword");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return UserPrincipal.create(user);
     }

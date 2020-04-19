@@ -42,6 +42,7 @@
     "rxjs": "6.5.3",
     "swagger-ui-dist": "3.24.3",
     "tslib": "1.10.0",
+    "web-animations-js": "^2.3.2",
     "zone.js": "0.10.2"
   },
   "devDependencies": {

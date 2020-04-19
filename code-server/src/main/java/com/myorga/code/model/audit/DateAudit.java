@@ -1,6 +1,5 @@
 package com.myorga.code.model.audit;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.Instant;
 

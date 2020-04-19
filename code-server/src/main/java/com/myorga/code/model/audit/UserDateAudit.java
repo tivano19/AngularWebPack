@@ -1,8 +1,5 @@
 package com.myorga.code.model.audit;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-
 public abstract class UserDateAudit extends DateAudit {
 
 
